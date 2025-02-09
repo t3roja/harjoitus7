@@ -7,7 +7,7 @@ import MainAppBar from './components/MainAppBar';
 import Settings from './screens/Settings';
 import { NavigationContainer } from '@react-navigation/native'
 import StopWatch from './screens/StopWatch';
-
+import ThemeProvider from './context/ThemeProvider';
 
 
 export default function App() {
@@ -15,24 +15,25 @@ export default function App() {
 
   return (
     <PaperProvider>
-      <NavigationContainer>
-        <StatusBar backgroundColor='#666' barStyle='light-content' />
-        <Stack.Navigator
-          initialRouteName='Home'
-          screenOptions={{
-            header: (props) =>
-              <MainAppBar {...props} backgroundColor='#666' icon='cog' color='#fff' />
-          }}
-        >
-          <Stack.Screen name='Home'>
-            {() =>
-              <Home />
-            }
-          </Stack.Screen>
-          <Stack.Screen name='Settings' component={Settings} />
-          <Stack.Screen name='StopWatch' component={StopWatch} />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <ThemeProvider>
+        <NavigationContainer>
+          <StatusBar backgroundColor='#666' barStyle='light-content' />
+          <Stack.Navigator
+            initialRouteName='Home'
+            screenOptions={{header: (props) =>
+                <MainAppBar {...props} backgroundColor='#666' icon='cog' color='#fff' />
+            }}
+          >
+            <Stack.Screen name='Home'>
+              {() =>
+                <Home />
+              }
+            </Stack.Screen>
+            <Stack.Screen name='Settings' component={Settings} />
+            <Stack.Screen name='StopWatch' component={StopWatch} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </ThemeProvider>
     </PaperProvider>
   )
 }

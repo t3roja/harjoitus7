@@ -9,7 +9,7 @@ export default function MainAppBar(props) {
         <Appbar.Header style={{ backgroundColor: props.backgroundColor }} mode='center-aligned'>
             {props.back ? <Appbar.BackAction color={props.color} onPress={() => props.navigation.goBack()} /> : null}
             <Appbar.Content title={title} color={props.color} />
-            {!props.goBack ? null : <>
+            {props.back ? !null : <>
                 <Appbar.Action icon='cog' color={props.color} onPress={() =>
                     props.navigation.navigate('Settings')} />
                 <Appbar.Action icon='watch' color={props.color} onPress={() =>
