@@ -10,7 +10,7 @@ const {isDarkMode} = useTheme()
 
   return (
     <View style={[Styles.container, isDarkMode ? Styles.dark : Styles.light]}>
-     <Text>Settings</Text> 
+     <Text style={isDarkMode ? Styles.dark : Styles.light}>Settings</Text> 
      <ThemeSwitchButton/>
     </View>
   )

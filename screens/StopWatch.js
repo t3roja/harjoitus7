@@ -1,40 +1,44 @@
-import { Button, StyleSheet, Text, View } from 'react-native'
+import { Button, Text, View } from 'react-native'
 import { useEffect, useReducer, useRef } from 'react'
+import { useTheme } from '../context/useTheme'
+import Styles from '../Styles'
 
 const initialState = {
-    isRunning: false,
-    time: 0
+  isRunning: false,
+  time: 0
 }
 
 const reducer = (state, action) => {
-    switch (action.type) {
-        case 'start':
-            return { ...state, isRunning: true }
-        case 'stop':
-            return { ...state, isRunning: false }
-        case 'reset':
-            return { isRunning: false, time: 0 }
-        case 'tick':
-            return { ...state, time: state.time + 1 }
-        default:
-            throw new Error()
-    }
+  switch (action.type) {
+    case 'start':
+      return { ...state, isRunning: true }
+    case 'stop':
+      return { ...state, isRunning: false }
+    case 'reset':
+      return { isRunning: false, time: 0 }
+    case 'tick':
+      return { ...state, time: state.time + 1 }
+    default:
+      throw new Error()
+  }
 }
 
 export default function StopWatch() {
 
-    const [state, dispatch] = useReducer(reducer, initialState)
-    const timerId = useRef(null)
+  const { isDarkMode } = useTheme()
 
-    useEffect(() => {
-        if (!state.isRunning) return
+  const [state, dispatch] = useReducer(reducer, initialState)
+  const timerId = useRef(null)
 
-        timerId.current = setInterval(() => dispatch({ type: 'tick' }), 1000)
-        return () => {
-            clearInterval(timerId.current)
-            timerId.current = null
-        }
-    }, [state.isRunning])
+  useEffect(() => {
+    if (!state.isRunning) return
+
+    timerId.current = setInterval(() => dispatch({ type: 'tick' }), 1000)
+    return () => {
+      clearInterval(timerId.current)
+      timerId.current = null
+    }
+  }, [state.isRunning])
 
   const FormattedTime = () => {
     const secondsInt = parseInt(state.time, 10)
@@ -42,36 +46,17 @@ export default function StopWatch() {
     const minutes = String(Math.floor((secondsInt / 60) % 60))
     const seconds = String(secondsInt % 60)
 
-    return <Text style={styles.time}>{hours.padStart(2, '0')}.{minutes.padStart(2, '0')}.{seconds.padStart(2, '0')}</Text>
+    return <Text style={[isDarkMode ? Styles.dark : Styles.light, Styles.stopWatchTime]}>{hours.padStart(2, '0')}.{minutes.padStart(2, '0')}.{seconds.padStart(2, '0')}</Text>
   }
 
-    return (
-            <View style={styles.container}>
-              <FormattedTime />
-              <View style={styles.buttons}>
-                <Button title='Start' onPress={() => dispatch({ type: 'start' })} />
-                <Button title='Stop' onPress={() => dispatch({ type: 'stop' })} />
-                <Button title='Reset' onPress={() => dispatch({ type: 'reset' })} />
-              </View>
-            </View>
-    )
+  return (
+    <View style={[Styles.container, isDarkMode ? Styles.dark : Styles.light, Styles.stopWatchContainer]}>
+      <FormattedTime />
+      <View style={Styles.stopWatchButtons}>
+        <Button title='Start' onPress={() => dispatch({ type: 'start' })} />
+        <Button title='Stop' onPress={() => dispatch({ type: 'stop' })} />
+        <Button title='Reset' onPress={() => dispatch({ type: 'reset' })} />
+      </View>
+    </View>
+  )
 }
-
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  buttons: {
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    width: '100%'
-  },
-  time: {
-    fontSize: 64,
-    fontWeight: 'bold',
-  }
-});
