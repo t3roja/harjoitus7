@@ -3,7 +3,7 @@ import { SafeAreaView, StyleSheet } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native'
 import MainAppBar from './components/MainAppBar';
-import Home from './screens/Home';
+import Home from './screens/Todo';
 import Settings from './screens/Settings';
 import StopWatch from './screens/StopWatch';
 import ThemeProvider from './context/ThemeProvider';
@@ -18,13 +18,13 @@ export default function App() {
         <SafeAreaView style={{flex: 1}}>
           <NavigationContainer>
             <Stack.Navigator
-              initialRouteName='Home'
+              initialRouteName='Todo'
               screenOptions={{
                 header: (props) =>
                   <MainAppBar {...props} backgroundColor='#666' icon='cog' color='#fff' />
               }}
             >
-              <Stack.Screen name='Home' component={Home}>
+              <Stack.Screen name='Todo' component={Home}>
               </Stack.Screen>
               <Stack.Screen name='Settings' component={Settings} />
               <Stack.Screen name='StopWatch' component={StopWatch} />

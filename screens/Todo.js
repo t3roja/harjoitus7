@@ -19,7 +19,7 @@ const reducer = (state, action) => {
 };
 
 
-export default function Home() {
+export default function Todo() {
 
   const { isDarkMode } = useTheme()
   const themeStyle = isDarkMode ? Styles.dark : Styles.light
